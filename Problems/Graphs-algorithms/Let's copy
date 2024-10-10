@@ -1,0 +1,43 @@
+from collections import deque
+
+def recorrer_grafo(grafo, visited, vertice):  
+    cola = deque() # Creamos una cola
+    cola.append(vertice) # Le añadimos el vertice inicial
+    while cola: # Mientras la cola no este vacia:
+        v_aux = cola.popleft() # Sacamos un vertice de la cola
+        for adyacente in grafo[v_aux]: # Por cada adyacente del vertice
+            if not visited[adyacente]: # Si no esta visitado
+                visited[adyacente] = True # Lo visitamos
+                cola.append(adyacente) # Añadimos a la cola el adyacente  
+
+
+def bfs(grafo, N, numero_min_aristas):
+    visited = N * [False] # Flags visitado
+    for vertice in range(0,N): # Iteracion por vertice
+        if not visited[vertice]: # Si no esta visitado
+            visited[vertice] = True
+            recorrer_grafo(grafo, visited, vertice) # Funcion aux recorrer el subgrafo conexo 
+            numero_min_aristas[0] += 1 # Contamos el grafo conexo
+
+                
+            
+# Entrada
+n_npares = list(map(int,(input()).split()))
+N = n_npares[0]
+M = n_npares[1]
+pares = []
+for par in range(0,M):
+    pares.append(list(map(int,(input()).split())))
+
+grafo = []
+for vertice in range(0,N):
+    grafo.append([])
+
+for arista in pares:
+    grafo[arista[0]].append(arista[1])
+    grafo[arista[1]].append(arista[0])
+numero_min_aristas = [0]
+bfs(grafo, N, numero_min_aristas)
+print(str(numero_min_aristas[0]))
+
+    
